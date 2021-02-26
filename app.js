@@ -20,6 +20,9 @@ const app = express();
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+// Need express to parse the body of a req so we can see it
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => {
     res.render("home");
 });
@@ -28,6 +31,16 @@ app.get("/", (req, res) => {
 app.get("/campgrounds", async (req, res) => {
     const campgrounds = await Campground.find({});
     res.render("campgrounds/index", { campgrounds });
+});
+
+app.get("/campgrounds/new", (req, res) => {
+    res.render("campgrounds/new");
+});
+
+app.post("/campgrounds", async (req, res) => {
+    const campground = new Campground(req.body.campground);
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
 });
 
 // Find the campground by req.params, pass that campground through to the show page so we can target and show that exact campground
