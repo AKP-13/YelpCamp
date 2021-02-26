@@ -10,6 +10,13 @@
         <!-- We have access to campground from app.js, so show that campground's title and location (for now) -->
         <h1><%= campground.title %></h1>
         <h2><%= campground.location %></h2>
+        <p>
+            <form action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                <button>
+                    Delete
+                </button>
+            </form>
+        </p>
         <footer>
             <p>
                 <a href="/campgrounds/<%= campground._id %>/edit">Edit</a>
