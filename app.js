@@ -24,11 +24,13 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
+// render index.ejs, pass through 'campgrounds' that we get back from Campground.find() (so pass through all campgrounds)
 app.get("/campgrounds", async (req, res) => {
     const campgrounds = await Campground.find({});
     res.render("campgrounds/index", { campgrounds });
 });
 
+// Find the campground by req.params, pass that campground through to the show page so we can target and show that exact campground
 app.get("/campgrounds/:id", async (req, res) => {
     const campground = await Campground.findById(req.params.id);
     res.render("campgrounds/show", { campground });

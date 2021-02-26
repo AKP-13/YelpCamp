@@ -9,6 +9,7 @@
     <body>
         <h1>All Campgrounds</h1>
         <ul>
+            <!-- loop through each campground within campgrounds we passed through from app.js -->
             <% for(let campground of campgrounds){%>
             <li>
                 <a href="/campgrounds/<%= campground._id %>"
