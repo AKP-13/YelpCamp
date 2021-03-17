@@ -3,6 +3,7 @@ const path = require("path");
 const mongoose = require("mongoose");
 const ejsMate = require("ejs-mate");
 const catchAsync = require("./utils/catchAsync");
+const ExpressError = require("./utils/ExpressError");
 const methodOverride = require("method-override");
 const Campground = require("./models/campground");
 
@@ -92,9 +93,16 @@ app.delete(
     })
 );
 
+// Throw to next (which is our error handling below) a new ExpressError
+app.all("*", (req, res, next) => {
+    next(new ExpressError("Page not found", 404));
+});
+
 // Currently our generic error handler
 // Whenever anything goes wrong, we just get this
 app.use((err, req, res, next) => {
+    const { statusCode = 500, message = "Something went wrong!" } = err;
+    res.status(statusCode).send(message);
     res.send("Oh boy, we got an error!");
 });
 
