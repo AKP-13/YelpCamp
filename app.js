@@ -101,9 +101,10 @@ app.all("*", (req, res, next) => {
 // Currently our generic error handler
 // Whenever anything goes wrong, we just get this
 app.use((err, req, res, next) => {
-    const { statusCode = 500, message = "Something went wrong!" } = err;
-    res.status(statusCode).send(message);
-    res.send("Oh boy, we got an error!");
+    const { statusCode = 500 } = err;
+    if (!err.message) err.message = "Oh no! Something went wrong!";
+    // Pass through entire err to error template
+    res.status(statusCode).render("error", { err });
 });
 
 app.listen(3000, () => {
